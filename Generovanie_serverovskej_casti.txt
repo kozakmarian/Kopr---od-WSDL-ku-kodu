@@ -1,0 +1,5 @@
+SET METRO_HOME=C:/java/metro
+SET PATH=%PATH%;%METRO_HOME%/bin
+e:
+cd "E:\Skola\3 rocnik ZS\Konkurentne programovanie\Projekt2\WSDLKod"
+wsimport -keep -s src -d bin AJS.wsdl -p sk.kopr.server

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:kopr="http://localhost:8888/AJS?wsdl"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="AJS" targetNamespace="http://localhost:8888/AJS?wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:koprxsd="urn:X-kopr">
+    <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:X-kopr" xmlns:tns="urn:X-kopr"
+			elementFormDefault="qualified">
+
+			<xsd:element name="PridajPredmetRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="NazovPredmetu" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="PridajPredmetResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="PredmetUUID" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="PredmetExistuje">
+				<xsd:complexType>
+					<xsd:all>
+						<xsd:element name="Chyba" type="xsd:string" />
+					</xsd:all>
+				</xsd:complexType>
+			</xsd:element>
+
+		</xsd:schema>
+	</wsdl:types>
+    <wsdl:message name="pridajPredmetRequest">
+    	<wsdl:part name="parameters" element="koprxsd:PridajPredmetRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="pridajPredmetResponse">
+    	<wsdl:part name="parameters" element="koprxsd:PridajPredmetResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="PredmetExistuje">
+		<wsdl:part name="fault" element="koprxsd:PredmetExistuje"></wsdl:part>
+	</wsdl:message>
+    <wsdl:portType name="PredmetPort">
+    	<wsdl:operation name="pridajPredmet">
+    		<wsdl:input message="kopr:pridajPredmetRequest"></wsdl:input>
+    		<wsdl:output message="kopr:pridajPredmetResponse"></wsdl:output>
+    		<wsdl:fault message="kopr:PredmetExistuje" name="PredmetExistuje"></wsdl:fault>
+    	</wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PredmetPortBinding" type="kopr:PredmetPort">
+    	<soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<wsdl:operation name="pridajPredmet">
+    		<soap:operation
+    			soapAction="http://localhost:8888/AJS/pridajPredmet" />
+    		<wsdl:input>
+    			<soap:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output>
+    			<soap:body use="literal" />
+    		</wsdl:output>
+    		<wsdl:fault name="PredmetExistuje">
+				<soap:fault name="PredmetExistuje" use="literal" />
+			</wsdl:fault>
+    	</wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Predmet">
+		<wsdl:port name="PredmetPort" binding="kopr:PredmetPortBinding">
+			<soap:address location="http://localhost:8888/AJS" />
+		</wsdl:port>
+	</wsdl:service></wsdl:definitions>
